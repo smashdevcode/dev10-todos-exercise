@@ -8,6 +8,50 @@
 <body>
 
     <script>
+
+        // GET
+        // fetch('http://localhost:8080/api/todos')
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log(data);
+        //     });
+
+        // GET
+        // fetch('http://localhost:8080/api/todos/1')
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log(data);
+        //     });
+
+        // POST http://localhost:8080/api/todos HTTP/1.1
+        // Content-Type: application/json
+
+        // {
+        //     "description": "New todo."
+        // }
+
+        // POST
+        fetch('http://localhost:8080/api/todos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    description: 'This is my new todo.'
+                }) // body data type must match "Content-Type" header
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    console.log('Success!');
+                    response.json().then(data => console.log(data));
+                } else if (response.status === 400) {
+                    console.log('Errors!');
+                    response.json().then(data => console.log(data));
+                } else {
+                    console.log('Oops... not sure what happened here :(');
+                }
+            });
+
     </script>
 
 </body>
