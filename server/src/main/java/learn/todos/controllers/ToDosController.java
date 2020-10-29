@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"localhost:3000","http://127.0.0.1:8081"})
+@CrossOrigin(origins = {"http://localhost:3000","http://127.0.0.1:8081"})
 @RequestMapping("/api/todos")
 public class ToDosController {
     private static int nextId = 11;
