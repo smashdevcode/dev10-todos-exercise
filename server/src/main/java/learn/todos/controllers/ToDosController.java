@@ -51,6 +51,7 @@ public class ToDosController {
 
         toDo.setId(nextId);
         nextId++;
+        toDos.add(toDo);
 
         URI uri = URI.create(String.format("/api/todos/%s", toDo.getId()));
 
