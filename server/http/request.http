@@ -29,3 +29,29 @@ Content-Type: application/json
 {
     "description": "New todo."
 }
+
+###
+
+PUT http://localhost:8080/api/todos/1 HTTP/1.1
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/api/todos/1 HTTP/1.1
+Content-Type: application/json
+
+{}
+
+###
+
+PUT http://localhost:8080/api/todos/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "description": "Updated todo."
+}
+
+###
+
+DELETE http://localhost:8080/api/todos/1 HTTP/1.1

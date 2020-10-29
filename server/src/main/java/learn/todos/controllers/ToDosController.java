@@ -35,11 +35,11 @@ public class ToDosController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> get(@PathVariable int id) {
-        ToDo todo = toDos.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
-        if (todo == null) {
+        ToDo toDo = toDos.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        if (toDo == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(todo);
+        return ResponseEntity.ok(toDo);
     }
 
     @PostMapping
@@ -57,9 +57,39 @@ public class ToDosController {
         return ResponseEntity.created(uri).body(toDo);
     }
 
-//    @PutMapping
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> put(@PathVariable int id, @RequestBody(required = false) ToDo toDo) {
+        List<String> errors = validateToDo(toDo);
 
-//    @DeleteMapping
+        if (errors.size() > 0) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        if (id != toDo.getId()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        ToDo toDoToUpdate = toDos.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        if (toDoToUpdate == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        toDoToUpdate.setDescription(toDo.getDescription());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        ToDo toDoToDelete = toDos.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        if (toDoToDelete == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        toDos.remove(toDoToDelete);
+
+        return ResponseEntity.noContent().build();
+    }
 
     private List<String> validateToDo(ToDo toDo) {
         List<String> errors = new ArrayList<>();
