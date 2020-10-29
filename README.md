@@ -27,8 +27,12 @@ After you've cloned this repo, open the `server` folder into IntelliJ and run th
 
 ## Homework
 
-* Start with completing any of the main tasks that are undone
+**Start with completing any of the main tasks that are undone!**
+
+Then choose one (or more) of the following:
+
 * Refactor the React app to use multiple components
+* Refactor the React app to use `async`/`await` for all of the Fetch API calls
 * Build another simple CRUD React + Spring API app with the theme of your choice
 * Read the React tutorial or watch one of the free Egghead React video courses
   * https://reactjs.org/tutorial/tutorial.html
