@@ -4,7 +4,8 @@ class ToDos extends React.Component {
   constructor() {
     super();
     this.state = {
-      toDos: []
+      toDos: [],
+      description: ''
     };
   }
 
@@ -18,7 +19,45 @@ class ToDos extends React.Component {
         });
   }
 
-  // TODO Add change event handler for the description input element
+  changeHandler = (event) => {
+    this.setState({
+      description: event.target.value
+    });
+  }
+
+  submitHandler = (event) => {
+    event.preventDefault();
+
+    fetch('http://localhost:8080/api/todos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        description: this.state.description
+      })
+    })
+    .then(response => {
+        if (response.status === 201) {
+            console.log('Success!');
+            response.json().then(data => console.log(data));
+
+            fetch('http://localhost:8080/api/todos')
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              this.setState({
+                toDos: data
+              });
+            });    
+        } else if (response.status === 400) {
+            console.log('Errors!');
+            response.json().then(data => console.log(data));
+        } else {
+            console.log('Oops... not sure what happened here :(');
+        }
+    });
+  }
 
   // TODO Add submit event handler for the form
   // TODO Use Fetch to make a POST
@@ -29,6 +68,10 @@ class ToDos extends React.Component {
       <>
         <h2>ToDos</h2>
         {/* TODO Add form element with a single input element and button */}
+        <form onSubmit={this.submitHandler}>
+          <input value={this.state.description} onChange={this.changeHandler} type="text" />
+          <button type="submit">Add ToDo</button>
+        </form>
         <ul>
           {this.state.toDos.map(toDo => (
             <li key={toDo.id}>{toDo.description}</li>
