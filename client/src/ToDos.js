@@ -6,6 +6,7 @@ class ToDos extends React.Component {
     this.state = {
       toDos: [],
       description: '',
+      errors: [],
     };
   }
 
@@ -47,14 +48,17 @@ class ToDos extends React.Component {
     })
       .then((response) => {
         if (response.status === 201) {
-          console.log('Success!');
-          response.json().then((data) => console.log(data));
+          this.setState({
+            description: '',
+            errors: [],
+          });
           this.getToDos();
         } else if (response.status === 400) {
-          console.log('Errors!');
-          response.json().then((data) => console.log(data));
+          response.json().then((data) => this.setState({
+            errors: data,
+          }));
         } else {
-          console.log('Oops... not sure what happened here :(');
+          throw new Error(`Unexpected response: ${response}`);
         }
       });
   }
@@ -63,12 +67,20 @@ class ToDos extends React.Component {
     const {
       toDos,
       description,
+      errors,
     } = this.state;
 
     return (
       <>
         <h2>ToDos</h2>
         <form onSubmit={this.submitHandler}>
+          {errors.length > 0 && (
+            <ul>
+              {errors.map((error) => (
+                <li key={error}>{error}</li>
+              ))}
+            </ul>
+          )}
           <input value={description} onChange={this.changeHandler} type="text" />
           <button type="submit">Add ToDo</button>
         </form>
