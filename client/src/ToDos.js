@@ -9,7 +9,7 @@ class ToDos extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getToDos = () => {
     fetch('http://localhost:8080/api/todos')
         .then(response => response.json())
         .then(data => {
@@ -17,6 +17,10 @@ class ToDos extends React.Component {
             toDos: data
           });
         });
+  }
+
+  componentDidMount() {
+    this.getToDos();
   }
 
   changeHandler = (event) => {
@@ -41,15 +45,7 @@ class ToDos extends React.Component {
         if (response.status === 201) {
             console.log('Success!');
             response.json().then(data => console.log(data));
-
-            fetch('http://localhost:8080/api/todos')
-            .then(response => response.json())
-            .then(data => {
-              console.log(data);
-              this.setState({
-                toDos: data
-              });
-            });    
+            this.getToDos();
         } else if (response.status === 400) {
             console.log('Errors!');
             response.json().then(data => console.log(data));
@@ -59,15 +55,10 @@ class ToDos extends React.Component {
     });
   }
 
-  // TODO Add submit event handler for the form
-  // TODO Use Fetch to make a POST
-  // TODO On success, use Fetch to get the list of ToDos
-
   render() {
     return (
       <>
         <h2>ToDos</h2>
-        {/* TODO Add form element with a single input element and button */}
         <form onSubmit={this.submitHandler}>
           <input value={this.state.description} onChange={this.changeHandler} type="text" />
           <button type="submit">Add ToDo</button>
