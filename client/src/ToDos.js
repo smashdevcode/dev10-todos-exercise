@@ -7,6 +7,7 @@ class ToDos extends React.Component {
       toDos: [],
       id: 0,
       description: '',
+      errors: [],
       mode: 'Add' // Add, Edit
     };
   }
@@ -19,6 +20,7 @@ class ToDos extends React.Component {
             toDos: data,
             id: 0,
             description: '',
+            errors: [],
             mode: 'Add'
           });
         });
@@ -53,7 +55,12 @@ class ToDos extends React.Component {
             this.getToDos();
         } else if (response.status === 400) {
             console.log('Errors!');
-            response.json().then(data => console.log(data));
+            response.json().then(data => {
+              console.log(data);
+              this.setState({
+                errors: data
+              });
+            });
         } else {
             console.log('Oops... not sure what happened here :(');
         }
@@ -83,9 +90,10 @@ class ToDos extends React.Component {
   // DONE add the form
   // DONE add the form submit handler
   // DONE reset the state
+  // DONE use "mode" to control form visibility
+  // DONE display errors
 
-  // TODO use "mode" to control form visibility
-  // TODO display errors
+  // Bootstrap
 
   editToDoHandler = (toDoId) => {
     console.log('Edit todo... ' + toDoId);
@@ -141,20 +149,45 @@ class ToDos extends React.Component {
             this.getToDos();
         } else if (response.status === 400) {
             console.log('Errors!');
-            response.json().then(data => console.log(data));
+            response.json().then(data => {
+              console.log(data);
+              this.setState({
+                errors: data
+              });
+            });
         } else {
             console.log('Oops... not sure what happened here :(');
         }
     });
   }
 
+  cancelEditToDo = () => {
+    this.setState({
+      id: 0,
+      description: '',
+      mode: 'Add'
+    });
+  }
+
   render() {
-    const { mode } = this.state;
+    const {
+      errors,
+      mode
+    } = this.state;
+    // const errors = this.state.errors;
     // const mode = this.state.mode;
 
     return (
       <>
         <h2>ToDos</h2>
+
+        {errors.length > 0 && (
+          <ul>
+            {errors.map(error => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
 
         {mode === 'Add' && (
           <form onSubmit={this.addSubmitHandler}>
@@ -167,6 +200,7 @@ class ToDos extends React.Component {
           <form onSubmit={this.editSubmitHandler}>
             <input value={this.state.description} onChange={this.changeHandler} type="text" />
             <button type="submit">Update ToDo</button>
+            <button onClick={this.cancelEditToDo} type="button">Cancel</button>
           </form>
         )}
 
