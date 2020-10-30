@@ -137,42 +137,56 @@ class ToDos extends React.Component {
 
     return (
       <>
-        <h2>ToDos</h2>
+        <h2 className="my-3">ToDos</h2>
+
+        {errors.length > 0 && (
+          <div className="alert alert-danger" role="alert">
+            <p>The following errors occurred:</p>
+            {errors.map((error) => (
+              <p key={error}>{error}</p>
+            ))}
+          </div>
+        )}
+
         {mode === 'Add' && (
-          <form onSubmit={this.addSubmitHandler}>
-            {errors.length > 0 && (
-              <ul>
-                {errors.map((error) => (
-                  <li key={error}>{error}</li>
-                ))}
-              </ul>
-            )}
-            <input value={description} onChange={this.changeHandler} type="text" />
-            <button type="submit">Add ToDo</button>
+          <form className="form-inline p-3" onSubmit={this.addSubmitHandler}>
+            <div className="form-group col-6">
+              <input className="form-control col-12" value={description} onChange={this.changeHandler} placeholder="Enter a description..." type="text" />
+            </div>
+            <button className="btn btn-success ml-2" type="submit">Add ToDo</button>
           </form>
         )}
+
         {mode === 'Edit' && (
-          <form onSubmit={this.editSubmitHandler}>
-            {errors.length > 0 && (
-              <ul>
-                {errors.map((error) => (
-                  <li key={error}>{error}</li>
-                ))}
-              </ul>
-            )}
-            <input value={description} onChange={this.changeHandler} type="text" />
-            <button type="submit">Update ToDo</button>
+          <form className="form-inline p-3" onSubmit={this.editSubmitHandler}>
+            <div className="form-group col-6">
+              <input className="form-control col-12" value={description} onChange={this.changeHandler} placeholder="Enter a description..." type="text" />
+            </div>
+            <button className="btn btn-success ml-2" type="submit">Update ToDo</button>
           </form>
         )}
-        <ul>
-          {toDos.map((toDo) => (
-            <li key={toDo.id}>
-              {toDo.description}
-              <button type="button" onClick={() => this.editToDo(toDo.id)}>Edit</button>
-              <button type="button" onClick={() => this.deleteToDo(toDo.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
+
+        <table className="table table-dark table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">ToDo Description</th>
+              <th scope="col">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            {toDos.map((toDo) => (
+              <tr key={toDo.id}>
+                <td>{toDo.description}</td>
+                <td>
+                  <div className="float-right">
+                    <button className="btn btn-sm btn-primary mr-2" type="button" onClick={() => this.editToDo(toDo.id)}>Edit</button>
+                    <button className="btn btn-sm btn-danger" type="button" onClick={() => this.deleteToDo(toDo.id)}>Delete</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </>
     );
   }
