@@ -16,14 +16,12 @@ class ToDos extends React.Component {
     this.getToDos();
   }
 
-  getToDos = () => {
-    fetch('http://localhost:8080/api/todos')
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          toDos: data,
-        });
-      });
+  getToDos = async () => {
+    const response = await fetch('http://localhost:8080/api/todos');
+    const data = await response.json();
+    this.setState({
+      toDos: data,
+    });
   }
 
   changeHandler = (event) => {
@@ -32,14 +30,14 @@ class ToDos extends React.Component {
     });
   }
 
-  addSubmitHandler = (event) => {
+  addSubmitHandler = async (event) => {
     event.preventDefault();
 
     const {
       description,
     } = this.state;
 
-    fetch('http://localhost:8080/api/todos', {
+    const response = await fetch('http://localhost:8080/api/todos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,25 +45,25 @@ class ToDos extends React.Component {
       body: JSON.stringify({
         description,
       }),
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          this.setState({
-            description: '',
-            errors: [],
-          });
-          this.getToDos();
-        } else if (response.status === 400) {
-          response.json().then((data) => this.setState({
-            errors: data,
-          }));
-        } else {
-          throw new Error(`Unexpected response: ${response}`);
-        }
+    });
+
+    if (response.status === 201) {
+      this.setState({
+        description: '',
+        errors: [],
       });
+      this.getToDos();
+    } else if (response.status === 400) {
+      const data = await response.json();
+      this.setState({
+        errors: data,
+      });
+    } else {
+      throw new Error(`Unexpected response: ${response}`);
+    }
   }
 
-  editSubmitHandler = (event) => {
+  editSubmitHandler = async (event) => {
     event.preventDefault();
 
     const {
@@ -73,7 +71,7 @@ class ToDos extends React.Component {
       description,
     } = this.state;
 
-    fetch(`http://localhost:8080/api/todos/${id}`, {
+    const response = await fetch(`http://localhost:8080/api/todos/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -82,49 +80,45 @@ class ToDos extends React.Component {
         id,
         description,
       }),
-    })
-      .then((response) => {
-        if (response.status === 204) {
-          this.setState({
-            id: 0,
-            description: '',
-            errors: [],
-            mode: 'Add',
-          });
-          this.getToDos();
-        } else if (response.status === 400) {
-          response.json().then((data) => this.setState({
-            errors: data,
-          }));
-        } else {
-          throw new Error(`Unexpected response: ${response}`);
-        }
+    });
+
+    if (response.status === 204) {
+      this.setState({
+        id: 0,
+        description: '',
+        errors: [],
+        mode: 'Add',
       });
+      this.getToDos();
+    } else if (response.status === 400) {
+      const data = await response.json();
+      this.setState({
+        errors: data,
+      });
+    } else {
+      throw new Error(`Unexpected response: ${response}`);
+    }
   }
 
-  editToDo = (toDoId) => {
-    fetch(`http://localhost:8080/api/todos/${toDoId}`)
-      .then((response) => response.json())
-      .then(({ id, description }) => {
-        this.setState({
-          id,
-          description,
-          mode: 'Edit',
-        });
-      });
+  editToDo = async (toDoId) => {
+    const response = await fetch(`http://localhost:8080/api/todos/${toDoId}`);
+    const { id, description } = await response.json();
+    this.setState({
+      id,
+      description,
+      mode: 'Edit',
+    });
   }
 
-  deleteToDo = (toDoId) => {
-    fetch(`http://localhost:8080/api/todos/${toDoId}`, {
+  deleteToDo = async (toDoId) => {
+    const response = await fetch(`http://localhost:8080/api/todos/${toDoId}`, {
       method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.status === 204) {
-          this.getToDos();
-        } else {
-          throw new Error(`Unexpected response: ${response}`);
-        }
-      });
+    });
+    if (response.status === 204) {
+      this.getToDos();
+    } else {
+      throw new Error(`Unexpected response: ${response}`);
+    }
   }
 
   render() {
