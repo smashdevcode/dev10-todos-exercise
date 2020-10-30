@@ -6,7 +6,8 @@ class ToDos extends React.Component {
     this.state = {
       toDos: [],
       id: 0,
-      description: ''
+      description: '',
+      mode: 'Add' // Add, Edit
     };
   }
 
@@ -17,7 +18,8 @@ class ToDos extends React.Component {
           this.setState({
             toDos: data,
             id: 0,
-            description: ''
+            description: '',
+            mode: 'Add'
           });
         });
   }
@@ -94,7 +96,8 @@ class ToDos extends React.Component {
       .then(data => {
         this.setState({
           id: data.id,
-          description: data.description
+          description: data.description,
+          mode: 'Edit'
         });
       });
       // you can optionally use destructuring...
@@ -146,17 +149,27 @@ class ToDos extends React.Component {
   }
 
   render() {
+    const { mode } = this.state;
+    // const mode = this.state.mode;
+
     return (
       <>
         <h2>ToDos</h2>
-        <form onSubmit={this.addSubmitHandler}>
-          <input value={this.state.description} onChange={this.changeHandler} type="text" />
-          <button type="submit">Add ToDo</button>
-        </form>
-        <form onSubmit={this.editSubmitHandler}>
-          <input value={this.state.description} onChange={this.changeHandler} type="text" />
-          <button type="submit">Update ToDo</button>
-        </form>
+
+        {mode === 'Add' && (
+          <form onSubmit={this.addSubmitHandler}>
+            <input value={this.state.description} onChange={this.changeHandler} type="text" />
+            <button type="submit">Add ToDo</button>
+          </form>
+        )}
+
+        {mode === 'Edit' && (
+          <form onSubmit={this.editSubmitHandler}>
+            <input value={this.state.description} onChange={this.changeHandler} type="text" />
+            <button type="submit">Update ToDo</button>
+          </form>
+        )}
+
         <ul>
           {this.state.toDos.map(toDo => (
             <li key={toDo.id}>
