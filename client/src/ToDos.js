@@ -55,6 +55,23 @@ class ToDos extends React.Component {
     });
   }
 
+  deleteToDoHandler = (toDoId) => {
+    console.log('Delete todo... ' + toDoId);
+
+    // DELETE http://localhost:8080/api/todos/1 HTTP/1.1
+    fetch(`http://localhost:8080/api/todos/${toDoId}`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      if (response.status === 204) {
+        console.log('Success!');
+        this.getToDos();
+      } else {
+        console.log('Delete failed for some reason: ' + response);
+      }
+    });
+  }
+
   render() {
     return (
       <>
@@ -65,7 +82,10 @@ class ToDos extends React.Component {
         </form>
         <ul>
           {this.state.toDos.map(toDo => (
-            <li key={toDo.id}>{toDo.description}</li>
+            <li key={toDo.id}>
+              {toDo.description}
+              <button type="button" onClick={() => this.deleteToDoHandler(toDo.id)}>Delete</button>
+            </li>
           ))}
         </ul>
       </>
