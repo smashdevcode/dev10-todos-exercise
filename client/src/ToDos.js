@@ -165,6 +165,7 @@ class ToDos extends React.Component {
     this.setState({
       id: 0,
       description: '',
+      errors: [],
       mode: 'Add'
     });
   }
@@ -182,37 +183,56 @@ class ToDos extends React.Component {
         <h2>ToDos</h2>
 
         {errors.length > 0 && (
-          <ul>
+          <div className="alert alert-danger" role="alert">
+            <p>The following errors occurred:</p>
             {errors.map(error => (
-              <li key={error}>{error}</li>
+              <p key={error}>{error}</p>
             ))}
-          </ul>
+          </div>
         )}
 
         {mode === 'Add' && (
-          <form onSubmit={this.addSubmitHandler}>
-            <input value={this.state.description} onChange={this.changeHandler} type="text" />
-            <button type="submit">Add ToDo</button>
+          <form className="form-inline m-3" onSubmit={this.addSubmitHandler}>
+            <div className="form-group col-6">
+              <input className="form-control col-12" value={this.state.description} 
+                onChange={this.changeHandler} type="text" placeholder="Please provide a description..." />
+            </div>
+            <button className="btn btn-success ml-1" type="submit">Add ToDo</button>
           </form>
         )}
 
         {mode === 'Edit' && (
-          <form onSubmit={this.editSubmitHandler}>
-            <input value={this.state.description} onChange={this.changeHandler} type="text" />
-            <button type="submit">Update ToDo</button>
-            <button onClick={this.cancelEditToDo} type="button">Cancel</button>
+          <form className="form-inline m-3" onSubmit={this.editSubmitHandler}>
+            <div className="form-group col-6">
+              <input className="form-control col-12" value={this.state.description} 
+                onChange={this.changeHandler} type="text" placeholder="Please provide a description..." />
+            </div>
+            <button className="btn btn-success ml-1" type="submit">Update ToDo</button>
+            <button className="btn btn-warning ml-1" onClick={this.cancelEditToDo} type="button">Cancel</button>
           </form>
         )}
 
-        <ul>
-          {this.state.toDos.map(toDo => (
-            <li key={toDo.id}>
-              {toDo.description}
-              <button type="button" onClick={() => this.editToDoHandler(toDo.id)}>Edit</button>
-              <button type="button" onClick={() => this.deleteToDoHandler(toDo.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
+        <table className="table table-dark table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">ToDo Description</th>
+              <th scope="col">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.toDos.map(toDo => (
+              <tr key={toDo.id}>
+                <td>{toDo.description}</td>
+                <td>
+                  <div className="float-right">
+                    <button className="btn btn-primary btn-sm mr-2" type="button" onClick={() => this.editToDoHandler(toDo.id)}>Edit</button>
+                    <button className="btn btn-danger btn-sm" type="button" onClick={() => this.deleteToDoHandler(toDo.id)}>Delete</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </>
     );
   }
