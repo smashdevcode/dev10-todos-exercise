@@ -1,12 +1,12 @@
+import { Link } from 'react-router-dom';
 
-export default function ToDo({ toDo, editToDo, deleteToDo }) {
+export default function ToDo({ toDo, deleteToDo }) {
   return (
     <tr>
         <td>{toDo.description}</td>
         <td>
         <div className="float-right">
-            <button className="btn btn-primary btn-sm mr-2" type="button" 
-              onClick={() => editToDo(toDo.id)}>Edit</button>
+            <Link className="btn btn-primary btn-sm mr-2" to={`/edit/${toDo.id}`}>Edit</Link>
             <button className="btn btn-danger btn-sm" type="button" 
               onClick={() => deleteToDo(toDo.id)}>Delete</button>
         </div>
