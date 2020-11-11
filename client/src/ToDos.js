@@ -1,5 +1,8 @@
 import React from 'react';
 
+import ToDo from './components/ToDo';
+import Errors from './components/Errors';
+
 class ToDos extends React.Component {
   constructor() {
     super();
@@ -83,17 +86,6 @@ class ToDos extends React.Component {
       }
     });
   }
-
-  // DONE add "edit" button
-  // DONE stub out the handler method
-  // DONE fetch the todo and update state
-  // DONE add the form
-  // DONE add the form submit handler
-  // DONE reset the state
-  // DONE use "mode" to control form visibility
-  // DONE display errors
-
-  // Bootstrap
 
   editToDoHandler = (toDoId) => {
     console.log('Edit todo... ' + toDoId);
@@ -182,14 +174,7 @@ class ToDos extends React.Component {
       <>
         <h2>ToDos</h2>
 
-        {errors.length > 0 && (
-          <div className="alert alert-danger" role="alert">
-            <p>The following errors occurred:</p>
-            {errors.map(error => (
-              <p key={error}>{error}</p>
-            ))}
-          </div>
-        )}
+        <Errors errors={errors} />
 
         {mode === 'Add' && (
           <form className="form-inline m-3" onSubmit={this.addSubmitHandler}>
@@ -221,15 +206,10 @@ class ToDos extends React.Component {
           </thead>
           <tbody>
             {this.state.toDos.map(toDo => (
-              <tr key={toDo.id}>
-                <td>{toDo.description}</td>
-                <td>
-                  <div className="float-right">
-                    <button className="btn btn-primary btn-sm mr-2" type="button" onClick={() => this.editToDoHandler(toDo.id)}>Edit</button>
-                    <button className="btn btn-danger btn-sm" type="button" onClick={() => this.deleteToDoHandler(toDo.id)}>Delete</button>
-                  </div>
-                </td>
-              </tr>
+              <ToDo key={toDo.id} 
+                toDo={toDo} 
+                editToDo={this.editToDoHandler} 
+                deleteToDo={this.deleteToDoHandler} />
             ))}
           </tbody>
         </table>

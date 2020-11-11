@@ -1,8 +1,8 @@
-import ToDos from './ToDos';
+import ToDosHooks from './ToDosHooks';
 
 function App() {
   return (
-    <ToDos />
+    <ToDosHooks />
   );
 }
 
