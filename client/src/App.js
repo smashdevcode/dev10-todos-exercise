@@ -1,9 +1,9 @@
 import React from 'react';
-import ToDos from './components/ToDos';
+import ToDosHooks from './components/ToDosHooks';
 
 function App() {
   return (
-    <ToDos />
+    <ToDosHooks />
   );
 }
 
