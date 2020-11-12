@@ -25,6 +25,7 @@ Content-Type: application/json
 
 POST http://localhost:8080/api/todos HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0b2RvcyIsInN1YiI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOiJST0xFX0FETUlOIiwiZXhwIjoxNjA1MTk4ODE0fQ.b4aC680iQfvY71Ji6lIDUfEAb_ZkTUwvPCCa5gyRDX4
 
 {
     "description": "New todo."
@@ -55,3 +56,23 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:8080/api/todos/1 HTTP/1.1
+
+###
+
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "your-username",
+    "password": "your-password"
+}
+
+###
+
+POST http://localhost:8080/api/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
