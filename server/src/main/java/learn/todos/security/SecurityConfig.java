@@ -45,23 +45,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        var userBuilder = User.withUsername("user")
-                .password("user").passwordEncoder(password -> encoder.encode(password))
-                .roles("USER");
-
-        var adminBuilder = User.withUsername("admin")
-                .password("admin").passwordEncoder(password -> encoder.encode(password))
-                .roles("ADMIN");
-
-        auth.inMemoryAuthentication()
-                .withUser(userBuilder)
-                .withUser(adminBuilder);
-    }
+//    @Autowired
+//    private PasswordEncoder encoder;
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        var userBuilder = User.withUsername("user")
+//                .password("user").passwordEncoder(password -> encoder.encode(password))
+//                .roles("USER");
+//
+//        var adminBuilder = User.withUsername("admin")
+//                .password("admin").passwordEncoder(password -> encoder.encode(password))
+//                .roles("ADMIN");
+//
+//        auth.inMemoryAuthentication()
+//                .withUser(userBuilder)
+//                .withUser(adminBuilder);
+//    }
 
     @Bean
     public PasswordEncoder getEncoder() {
