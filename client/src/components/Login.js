@@ -15,12 +15,32 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // TODO Call API to authenticate and get token.
-    const token = "notatoken";
-
-    auth.login(token);
-
-    history.push('/');
+    const response = await fetch('http://localhost:8080/api/authenticate', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    });
+    
+    if (response.status === 200) {
+      const { jwt_token } = await response.json();
+    
+      // {
+      //   "jwt_token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjYWxvcmllLXRyYWNrZXIiLCJzdWIiOiJzbWFzaGRldjUiLCJhdXRob3JpdGllcyI6IlJPTEVfVVNFUiIsImV4cCI6MTYwNTIzNDczNH0.nwWJtPYhD1WlZA9mGo4n5U0UQ3rEW_kulilO2dEg7jo"
+      // }
+    
+      auth.login(jwt_token);
+    
+      history.push('/');
+    } else if (response.status === 403) {
+      setErrors(['Login failed.']);
+    } else {
+      setErrors(['Unknown error.']);
+    }
   };
 
   return (

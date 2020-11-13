@@ -9,6 +9,10 @@ public class AppUser {
     private String password;
     private boolean disabled;
 
+//    private String firstName;
+//    private String lastName;
+//    private String email;
+
     private List<String> roles = new ArrayList<>();
 
     public int getAppUserId() {

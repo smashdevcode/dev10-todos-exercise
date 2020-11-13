@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import AuthContext from './AuthContext';
 import Errors from './Errors';
 
 export default function AddToDo() {
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState([]);
 
+  const auth = useContext(AuthContext);
   const history = useHistory();
 
   const addSubmitHandler = (event) => {
@@ -15,7 +17,8 @@ export default function AddToDo() {
     fetch('http://localhost:8080/api/todos', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth.user.token}`
       },
       body: JSON.stringify({
         description
